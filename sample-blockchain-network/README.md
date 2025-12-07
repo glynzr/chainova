@@ -13,3 +13,5 @@ bun hardhat node --port 8545
 ```
 
 I deployed a smart contract emitting events on contracts/EventEmitter.sol
+
+Ha I forgot to add! I do not love npm anymore

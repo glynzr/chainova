@@ -14,7 +14,7 @@ async function main() {
     const [sender, receiver] = await ethers.getSigners();
 
     // Amount of ETH to send (in ethers)
-    const ethToSend = "0.01"; 
+    const ethToSend = "0.001"; 
 
     // Amount for the event (arbitrary)
     const eventAmount = Math.floor(Math.random() * 1000);

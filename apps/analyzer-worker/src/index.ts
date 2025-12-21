@@ -1,5 +1,6 @@
 import "dotenv/config";
 import Redis from "ioredis";
+import { Prisma } from "@prisma/client";
 import pino from "pino";
 import { prisma } from "@chainova/db";
 import { type SecurityEvent } from "@chainova/shared";
@@ -18,15 +19,15 @@ function toBigIntSafe(v: unknown): bigint {
   if (
     typeof v === "object" &&
     v !== null &&
-    "$type" in v &&
     (v as any).$type === "BigInt" &&
-    "value" in v
+    typeof (v as any).value === "string"
   ) {
     return BigInt((v as any).value);
   }
 
   throw new Error(`Invalid BigInt value: ${JSON.stringify(v)}`);
 }
+
 
 const log = pino({ level: process.env.CHAINOVA_LOG_LEVEL ?? "info" });
 
@@ -75,31 +76,56 @@ function bumpContext(e: SecurityEvent) {
 
   return { minute };
 }
+// async function storeRaw(e: SecurityEvent) {
+//   return prisma.rawEvent.upsert({
+//     where: { txHash: e.txHash },
+//     create: {
+//       txHash: e.txHash,
+//       contract: e.contract,
+//       sender: e.sender,
+//       receiver: e.receiver,
+//       origin: e.origin,
 
+//       amount: toBigIntSafe(e.amount),
+//       value: toBigIntSafe(e.value),
+//       gasPrice: toBigIntSafe(e.gasPrice),
+//       nonce: toBigIntSafe(e.nonce),
+
+//       message: e.message,
+//       timestamp: e.timestamp,
+//       blockNumber: e.blockNumber,
+//       chainId: e.chainId,
+//     },
+//     update: {},
+//   });
+// }
 async function storeRaw(e: SecurityEvent) {
-  // Insert raw event; ignore duplicates by txHash
+  const data: Prisma.RawEventUncheckedCreateInput = {
+    txHash: e.txHash,
+    contract: e.contract,
+    sender: e.sender,
+    receiver: e.receiver,
+    origin: e.origin,
+
+    
+    amount: e.amount.toString(),
+    value: e.value.toString(),
+    gasPrice: e.gasPrice.toString(),
+    nonce: e.nonce,
+
+    message: e.message,
+    timestamp: e.timestamp,
+    blockNumber: e.blockNumber,
+    chainId: e.chainId,
+  };
+
   return prisma.rawEvent.upsert({
     where: { txHash: e.txHash },
-   create: {
-  txHash: e.txHash,
-  contract: e.contract,
-  sender: e.sender,
-  receiver: e.receiver,
-  origin: e.origin,
-
-  amount: toBigIntSafe(e.amount),
-value: toBigIntSafe(e.value),
-gasPrice: toBigIntSafe(e.gasPrice),
-nonce: toBigIntSafe(e.nonce),
-
-  timestamp: e.timestamp,
-  blockNumber: e.blockNumber,
-  chainId: e.chainId,
-}
-,
-    update: {}, // no-op
+    create: data,
+    update: {},
   });
 }
+
 
 async function storeAlert(payload: {
   severity: string;

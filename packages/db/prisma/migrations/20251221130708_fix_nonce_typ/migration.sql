@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "RawEvent" ALTER COLUMN "nonce" SET DATA TYPE TEXT;

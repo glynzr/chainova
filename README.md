@@ -89,7 +89,7 @@ You should see events and alerts appear in the dashboard.
 
 ---
 
-## 3) enable Gemini AI (batched)
+## 3) Optional: enable Gemini AI (batched)
 
 Set:
 
@@ -149,4 +149,3 @@ Worker:
 - `packages/db` — Prisma schema + client
 - `packages/shared` — shared TS types
 
-Stay tuned,kitties!!!

@@ -16,6 +16,10 @@
   },
   "devDependencies": {
     "prettier": "^3.5.0",
+    "prisma": "6.0.1",
     "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.0.1"
   }
 }

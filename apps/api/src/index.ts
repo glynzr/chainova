@@ -5,6 +5,14 @@ import websocket from "@fastify/websocket";
 import { prisma } from "@chainova/db";
 import pino from "pino";
 
+function serializeBigInt(obj: any): any {
+  return JSON.parse(
+    JSON.stringify(obj, (_, value) =>
+      typeof value === "bigint" ? value.toString() : value
+    )
+  );
+}
+
 const log = pino({ level: process.env.CHAINOVA_LOG_LEVEL ?? "info" });
 const app = Fastify({ logger: false });
 
@@ -19,7 +27,9 @@ app.get("/api/events", async (req, reply) => {
     orderBy: { createdAt: "desc" },
     take: Math.min(limit, 1000),
   });
-  return events;
+  // return events;
+  return events.map(serializeBigInt);
+
 });
 
 app.get("/api/alerts", async (req, reply) => {
@@ -32,26 +42,67 @@ app.get("/api/alerts", async (req, reply) => {
 });
 
 // Live alerts feed (websocket)
+// app.get("/ws/alerts", { websocket: true }, (conn, req) => {
+//   let timer: NodeJS.Timeout | null = null;
+//   let last = new Date(0);
+
+//   async function poll() {
+//     const alerts = await prisma.alert.findMany({
+//       where: { createdAt: { gt: last } },
+//       orderBy: { createdAt: "asc" },
+//       take: 200,
+//     });
+//     if (alerts.length) {
+//       last = alerts[alerts.length - 1]!.createdAt;
+//       conn.socket.send(JSON.stringify({ type: "alerts", alerts }));
+//     }
+//     timer = setTimeout(poll, 1000);
+//   }
+
+//   poll().catch((e) => log.error({ err: e }, "ws poll failed"));
+
+//   conn.socket.on("close", () => {
+//     if (timer) clearTimeout(timer);
+//   });
+// });
 app.get("/ws/alerts", { websocket: true }, (conn, req) => {
+  const socket = conn.socket;
   let timer: NodeJS.Timeout | null = null;
   let last = new Date(0);
+  let closed = false;
 
   async function poll() {
-    const alerts = await prisma.alert.findMany({
-      where: { createdAt: { gt: last } },
-      orderBy: { createdAt: "asc" },
-      take: 200,
-    });
-    if (alerts.length) {
-      last = alerts[alerts.length - 1]!.createdAt;
-      conn.socket.send(JSON.stringify({ type: "alerts", alerts }));
+    if (closed || !socket) return;
+
+    try {
+      const alerts = await prisma.alert.findMany({
+        where: { createdAt: { gt: last } },
+        orderBy: { createdAt: "asc" },
+        take: 200,
+      });
+
+      if (
+        alerts.length &&
+        socket.readyState === socket.OPEN
+      ) {
+        last = alerts[alerts.length - 1]!.createdAt;
+        socket.send(JSON.stringify({ type: "alerts", alerts }));
+      }
+    } catch (e) {
+      if (!closed) {
+        log.error({ err: e }, "ws poll failed");
+      }
     }
-    timer = setTimeout(poll, 1000);
+
+    if (!closed) {
+      timer = setTimeout(poll, 1000);
+    }
   }
 
-  poll().catch((e) => log.error({ err: e }, "ws poll failed"));
+  poll();
 
-  conn.socket.on("close", () => {
+  socket.on("close", () => {
+    closed = true;
     if (timer) clearTimeout(timer);
   });
 });

@@ -24,7 +24,7 @@ model RawEvent {
   timestamp   Int
   blockNumber Int
   gasPrice    BigInt   // wei
-  nonce       BigInt
+  nonce       String
   chainId     Int
 
   alerts      Alert[]  @relation("EventAlerts")

@@ -19,7 +19,7 @@ async function main() {
   );
 
   const signers = await hre.ethers.getSigners();
-  const [a0, a1, a2, a3, a4, a5] = signers;
+  const [a0, a1, a2, a3, a4, a5,a6] = signers;
 
   // Normal traffic
   for (let i = 0; i < 20; i++) {
@@ -43,7 +43,7 @@ async function main() {
 
   // Receiver spray
   for (let i = 0; i < 30; i++) {
-    const to = pick([a1, a2, a3, a4, a5]);
+    const to = pick([a1, a2, a3, a4, a5,a6]);
     await emitter
       .connect(a2)
       .sendTransaction(to.address, 1, "spray", {
@@ -54,7 +54,7 @@ async function main() {
   // Value spike
   await emitter
     .connect(a3)
-    .sendTransaction(a4.address, 1, "big_transfer", {
+    .sendTransaction(a5.address, 1, "big_transfer", {
       value: hre.ethers.parseEther("100"),
     });
 

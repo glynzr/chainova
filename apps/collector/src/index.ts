@@ -17,7 +17,7 @@ const log = pino({ level: process.env.CHAINOVA_LOG_LEVEL ?? "info" });
 
 const REDIS_URL = process.env.REDIS_URL ?? "redis://localhost:6379";
 const RPC_WS_URL = process.env.RPC_WS_URL ?? "ws://127.0.0.1:8545";
-const CONTRACT = process.env.EVENT_EMITTER_ADDRESS;
+const CONTRACT = process.env.EVENT_EMITTER_ADDRESS!;
 
 if (!CONTRACT) {
   throw new Error("EVENT_EMITTER_ADDRESS is required in .env");
@@ -25,7 +25,15 @@ if (!CONTRACT) {
 
 // NOTE: we load ABI from hardhat artifacts copied by deploy script
 // to keep collector decoupled from hardhat.
-import abi from "./abi/EventEmitter.json" assert { type: "json" };
+// import abi from "./abi/EventEmitter.json" assert { type: "json" };
+import fs from "node:fs";
+
+const abi = JSON.parse(
+  fs.readFileSync(
+    path.resolve(__dirname, "./abi/EventEmitter.json"),
+    "utf-8"
+  )
+);
 
 const redis = new Redis(REDIS_URL, { maxRetriesPerRequest: null });
 
@@ -94,7 +102,7 @@ async function main() {
   });
 
   provider.on("error", (err) => log.error({ err }, "ws provider error"));
-  provider.websocket?.on("close", () => log.warn("ws closed; ethers will reconnect"));
+  // provider.websocket?.on("close", () => log.warn("ws closed; ethers will reconnect"));
 
   const contract = new Contract(CONTRACT, abi, provider);
 

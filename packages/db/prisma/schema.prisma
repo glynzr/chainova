@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model RawEvent {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+
+  txHash      String   @unique
+  contract    String
+  sender      String   @db.VarChar(42)
+  receiver    String   @db.VarChar(42)
+  origin      String   @db.VarChar(42)
+
+  amount      BigInt   // token amount (wei / raw units)
+  value       BigInt   // ETH value (wei)
+
+  message     String
+  timestamp   Int
+  blockNumber Int
+  gasPrice    BigInt   // wei
+  nonce       BigInt
+  chainId     Int
+
+  alerts      Alert[]  @relation("EventAlerts")
+
+  @@index([blockNumber])
+  @@index([timestamp])
+  @@index([sender])
+  @@index([receiver])
+}
+
+model Alert {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+
+  severity    String
+  category    String
+  ruleId      String?
+  title       String
+  reason      String
+  recommendedAction String
+
+  sender      String?  @db.VarChar(42)
+  receiver    String?  @db.VarChar(42)
+  origin      String?  @db.VarChar(42)
+  txHash      String?
+  blockNumber Int?
+  timestamp   Int?
+
+  indicators       Json
+  relatedEventIds  Json
+  rawAiJson        Json?
+
+  event       RawEvent? @relation("EventAlerts", fields: [eventId], references: [id])
+  eventId     String?
+
+  @@index([createdAt])
+  @@index([severity])
+  @@index([category])
+  @@index([txHash])
+}
+
+model MinuteStat {
+  id          String   @id @default(cuid())
+
+  minute      Int      // unix minute bucket (timestamp / 60)
+  actor       String   @db.VarChar(42)
+
+  txCount     Int
+  totalValue  BigInt   // sum of wei
+  uniqueReceivers Int
+
+  createdAt   DateTime @default(now())
+
+  @@unique([minute, actor])
+  @@index([minute])
+  @@index([actor])
+}

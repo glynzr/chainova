@@ -1,0 +1,21 @@
+{
+  "name": "chainova-monorepo",
+  "private": true,
+  "packageManager": "pnpm@9.15.4",
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm -r --parallel dev",
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint",
+    "format": "pnpm -r format",
+    "db:generate": "pnpm --filter @chainova/db prisma generate",
+    "db:migrate": "pnpm --filter @chainova/db prisma migrate dev",
+    "db:studio": "pnpm --filter @chainova/db prisma studio",
+    "compose:up": "docker compose up -d",
+    "compose:down": "docker compose down -v"
+  },
+  "devDependencies": {
+    "prettier": "^3.5.0",
+    "typescript": "^5.9.3"
+  }
+}

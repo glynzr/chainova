@@ -1,1 +1,11 @@
-problem.txt
+node_modules
+dist
+.next
+out
+!.env.example
+coverage
+*.log
+.DS_Store
+.env
+artifacts/
+cache/

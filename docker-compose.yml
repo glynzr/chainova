@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: chainova
+      POSTGRES_PASSWORD: chainova
+      POSTGRES_DB: chainova
+    ports:
+      - "5432:5432"
+    volumes:
+      - chainova_pg:/var/lib/postgresql/data
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - chainova_redis:/data
+volumes:
+  chainova_pg:
+  chainova_redis:

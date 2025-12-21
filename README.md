@@ -42,6 +42,7 @@ pnpm install
 
 ```bash
 pnpm db:migrate
+pnpm prisma generate --schema=packages/db/prisma/schema.prisma
 ```
 
 ### D. Start Hardhat node (local chain)

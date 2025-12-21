@@ -2,10 +2,9 @@ import { Shield, Wifi, Server } from "lucide-react";
 
 interface DashboardHeaderProps {
   apiUrl: string;
-  isConnected?: boolean;
 }
 
-export function DashboardHeader({ apiUrl, isConnected = true }: DashboardHeaderProps) {
+export function DashboardHeader({ apiUrl}: DashboardHeaderProps) {
   return (
     <header className="relative mb-8">
       {/* Background glow effect */}
@@ -31,13 +30,6 @@ export function DashboardHeader({ apiUrl, isConnected = true }: DashboardHeaderP
         </div>
 
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/50 border border-border/50">
-            <Wifi className={`w-4 h-4 ${isConnected ? 'text-neon-green' : 'text-neon-red'}`} />
-            <span className="text-xs font-medium text-muted-foreground">
-              {isConnected ? 'Live' : 'Disconnected'}
-            </span>
-          </div>
-          
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/50 border border-border/50">
             <Server className="w-4 h-4 text-primary" />
             <code className="text-xs text-muted-foreground">

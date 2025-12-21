@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { List } from "lucide-react";
 import { DashboardCard } from "./DashboardCard";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface Event {
   txHash: string;
@@ -15,9 +17,40 @@ interface RecentEventsTableProps {
   events: Event[];
 }
 
+const LIMIT_OPTIONS = [
+  { value: "10", label: "10" },
+  { value: "25", label: "25" },
+  { value: "50", label: "50" },
+  { value: "100", label: "100" },
+  { value: "500", label: "500" },
+];
+
 export function RecentEventsTable({ events }: RecentEventsTableProps) {
+  const [limit, setLimit] = useState("25");
+
   return (
-    <DashboardCard title="Recent Transactions" icon={<List size={18} />} fullWidth>
+    <DashboardCard 
+      title="Recent Transactions" 
+      icon={<List size={18} />} 
+      fullWidth
+      headerAction={
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-muted-foreground">Show:</span>
+          <Select value={limit} onValueChange={setLimit}>
+            <SelectTrigger className="h-7 w-20 text-xs bg-muted/50 border-border/50">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {LIMIT_OPTIONS.map((opt) => (
+                <SelectItem key={opt.value} value={opt.value} className="text-xs">
+                  {opt.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      }
+    >
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
@@ -31,7 +64,7 @@ export function RecentEventsTable({ events }: RecentEventsTableProps) {
             </tr>
           </thead>
           <tbody>
-            {events.slice(0, 25).map((e, index) => (
+            {events.slice(0, parseInt(limit)).map((e, index) => (
               <tr 
                 key={e.txHash} 
                 className="border-b border-border/20 hover:bg-primary/5 transition-colors animate-fade-in"

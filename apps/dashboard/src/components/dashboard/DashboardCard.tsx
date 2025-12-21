@@ -7,9 +7,10 @@ interface DashboardCardProps {
   children: ReactNode;
   className?: string;
   fullWidth?: boolean;
+  headerAction?: ReactNode;
 }
 
-export function DashboardCard({ title, icon, children, className, fullWidth }: DashboardCardProps) {
+export function DashboardCard({ title, icon, children, className, fullWidth, headerAction }: DashboardCardProps) {
   return (
     <section
       className={cn(
@@ -26,15 +27,18 @@ export function DashboardCard({ title, icon, children, className, fullWidth }: D
       <div className="absolute bottom-0 right-0 w-8 h-8 border-r-2 border-b-2 border-primary/50 rounded-br-xl" />
 
       <div className="relative z-10">
-        <div className="flex items-center gap-2 mb-4">
-          {icon && (
-            <div className="text-primary animate-pulse-glow p-1">
-              {icon}
-            </div>
-          )}
-          <h2 className="font-display font-semibold text-sm uppercase tracking-wider text-foreground/90">
-            {title}
-          </h2>
+        <div className="flex items-center justify-between gap-2 mb-4">
+          <div className="flex items-center gap-2">
+            {icon && (
+              <div className="text-primary animate-pulse-glow p-1">
+                {icon}
+              </div>
+            )}
+            <h2 className="font-display font-semibold text-sm uppercase tracking-wider text-foreground/90">
+              {title}
+            </h2>
+          </div>
+          {headerAction}
         </div>
         {children}
       </div>

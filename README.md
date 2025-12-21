@@ -73,7 +73,12 @@ Open 4 terminals (or run `pnpm dev`):
 pnpm --filter @chainova/collector dev
 pnpm --filter @chainova/analyzer-worker dev
 pnpm --filter @chainova/api dev
-pnpm --filter @chainova/dashboard dev
+```
+For dashboard:
+```
+cd apps/dashboard
+pnpm i
+pnpm run dev
 ```
 
 Dashboard: http://localhost:3000  

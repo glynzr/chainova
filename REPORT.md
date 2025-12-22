@@ -237,6 +237,12 @@ Statistical methods detect deviations from normal behavior.
 - **Scalability**
 - **Explainability**
 
+## 7. User Interface Overview
+<img src="assets/1.png" width="50%">
+<img src="assets/2.png" width="50%">
+<img src="assets/3.png" width="50%">
+<img src="assets/4.png" width="50%">
+<img src="assets/5.png" width="50%">
 ---
 
 

@@ -9,9 +9,8 @@ This repo contains a complete working demo of:
   - Time-series anomaly detection (online z-score for value + EWMA tx rate)
   - Optional **Gemini** batched analysis (every 1–10 minutes or 50–100 events)
 - **Dashboard API (Fastify)** + live websocket feed
-- **Next.js Dashboard** with Plotly visualizations and alert table
+- **React Dashboard** with visualizations and alert table
 
-> Everything is written in modern ESM TypeScript (`"type": "module"`). No CommonJS.
 
 ---
 
@@ -129,29 +128,14 @@ Worker:
 
 ---
 
-## 5) Where to extend for a stronger security demo
-
-### Add more rules
-- rapid back-and-forth between same addresses (ping-pong)
-- fan-in (many senders to one receiver) → mixer/collector pattern
-- high gasPrice spikes (MEV / priority bidding)
-- repeated origin across many senders (contract-controlled swarm)
-
-### Improve time-series anomaly detection
-- per-(sender,receiver) edges stats
-- seasonality (daily/hourly) baselines
-- robust statistics (median/MAD) for outliers
-- change-point detection on tx/min
-
----
-
 ## Repo structure
 
 - `apps/blockchain` — Hardhat contract + scripts
 - `apps/collector` — WS subscription → Redis queue
 - `apps/analyzer-worker` — Redis → Postgres + detection + (optional) Gemini
 - `apps/api` — REST + websocket feed for dashboard
-- `apps/dashboard` — Next.js UI + Plotly charts
+- `apps/dashboard` — UI
 - `packages/db` — Prisma schema + client
 - `packages/shared` — shared TS types
 
+For more detailed information, please refer to [REPORT.md](REPORT.md).

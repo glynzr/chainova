@@ -165,6 +165,7 @@ Time-series and aggregated statistics are derived from base tables and cached wh
 | Aggregations | Per-sender / per-receiver stats |
 | Histograms | Value and frequency distributions |
 
+
 ---
 
 ## 4.2 Redis Structures

@@ -27,8 +27,7 @@ Each component is loosely coupled, enabling scalability and independent evolutio
 ---
 
 ## 3. Workflow of the Tool
-![Chainova Architecture](assets/architecture.png)
-<img src="assets/architecture.png" width="80%">
+<img src="assets/architecture.png" width="50%">
 
 
 

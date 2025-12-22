@@ -244,7 +244,8 @@ Statistical methods detect deviations from normal behavior.
 <img src="assets/3.png" width="50%">
 <img src="assets/5.png" width="50%">
 
-Critical and high severity alerts:
+
+
 <img src="assets/6.png" width="50%">
 <img src="assets/7.png" width="50%">
 ---

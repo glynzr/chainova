@@ -81,7 +81,7 @@ export function AllAlertsDialog({ alerts, open, onOpenChange }: AllAlertsDialogP
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <AlertTriangle size={20} className="text-primary" />
-                <DialogTitle className="font-display">All Alerts ({alerts.length})</DialogTitle>
+                <DialogTitle className="font-display">All Alerts </DialogTitle>
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-xs text-muted-foreground">Sort by:</span>

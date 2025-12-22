@@ -5,7 +5,7 @@ This repo contains a complete working demo of:
 - Hardhat local blockchain + `SecurityEvent` emitter contract
 - **Event Collector (TypeScript)** subscribing via WebSocket and pushing events into **Redis**
 - **Analyzer Worker (TypeScript)** consuming events, storing raw logs in **PostgreSQL**, running:
-  - Rule-based detection (spam bursts, receiver spray, repeated payloads, high value, origin mismatch)
+  - Rule-based detection (spam bursts, receiver spray, repeated payloads, high value, origin mismatch,rapid back-and-forth between same addresses (ping-pong),fan-in (many senders to one receiver) → mixer/collector pattern,high gasPrice spikes (MEV / priority bidding),repeated origin across many senders (contract-controlled swarm)
   - Time-series anomaly detection (online z-score for value + EWMA tx rate)
   - Optional **Gemini** batched analysis (every 1–10 minutes or 50–100 events)
 - **Dashboard API (Fastify)** + live websocket feed

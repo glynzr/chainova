@@ -22,7 +22,7 @@ await app.register(websocket);
 app.get("/health", async () => ({ ok: true }));
 
 app.get("/api/events", async (req, reply) => {
-  const limit = Number((req.query as any).limit ?? "200");
+  const limit = Number((req.query as any).limit ?? "500");
   const events = await prisma.rawEvent.findMany({
     orderBy: { createdAt: "desc" },
     take: Math.min(limit, 1000),

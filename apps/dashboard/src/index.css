@@ -1,0 +1,188 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222 47% 5%;
+    --foreground: 210 40% 94%;
+
+    --card: 222 47% 8%;
+    --card-foreground: 210 40% 94%;
+
+    --popover: 222 47% 8%;
+    --popover-foreground: 210 40% 94%;
+
+    --primary: 187 100% 42%;
+    --primary-foreground: 222 47% 5%;
+
+    --secondary: 270 60% 50%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 222 30% 15%;
+    --muted-foreground: 215 20% 55%;
+
+    --accent: 187 100% 42%;
+    --accent-foreground: 222 47% 5%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 222 30% 18%;
+    --input: 222 30% 15%;
+    --ring: 187 100% 42%;
+
+    --radius: 0.75rem;
+
+    /* Blockchain Theme Colors */
+    --neon-cyan: 187 100% 50%;
+    --neon-purple: 270 100% 65%;
+    --neon-blue: 210 100% 60%;
+    --neon-green: 142 76% 55%;
+    --neon-orange: 25 95% 55%;
+    --neon-red: 0 90% 60%;
+    --neon-yellow: 45 96% 58%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--neon-purple)) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(222 47% 10%) 0%, hsl(222 47% 6%) 100%);
+    --gradient-glow: radial-gradient(ellipse at center, hsl(var(--primary) / 0.15) 0%, transparent 70%);
+
+    /* Shadows & Glows */
+    --shadow-neon: 0 0 20px hsl(var(--primary) / 0.3), 0 0 40px hsl(var(--primary) / 0.1);
+    --shadow-card: 0 4px 24px hsl(222 47% 2% / 0.5), 0 0 1px hsl(var(--primary) / 0.3);
+    --glow-pulse: 0 0 30px hsl(var(--primary) / 0.4);
+
+    --sidebar-background: 222 47% 6%;
+    --sidebar-foreground: 210 40% 94%;
+    --sidebar-primary: 187 100% 42%;
+    --sidebar-primary-foreground: 222 47% 5%;
+    --sidebar-accent: 222 30% 12%;
+    --sidebar-accent-foreground: 210 40% 94%;
+    --sidebar-border: 222 30% 18%;
+    --sidebar-ring: 187 100% 42%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  }
+
+  code {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: 'Orbitron', sans-serif;
+  }
+
+  .font-mono {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gradient-primary);
+  }
+
+  .glow-border {
+    box-shadow: inset 0 0 0 1px hsl(var(--primary) / 0.3), var(--shadow-neon);
+  }
+
+  .card-glow {
+    box-shadow: var(--shadow-card);
+    background: var(--gradient-card);
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 3s ease-in-out infinite;
+  }
+
+  .grid-pattern {
+    background-image: 
+      linear-gradient(hsl(var(--primary) / 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--primary) / 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .scanline {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scanline::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      transparent 50%,
+      hsl(var(--primary) / 0.02) 50%
+    );
+    background-size: 100% 4px;
+    pointer-events: none;
+  }
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 10px hsl(var(--primary) / 0.3), 0 0 20px hsl(var(--primary) / 0.1);
+  }
+  to {
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.5), 0 0 40px hsl(var(--primary) / 0.2);
+  }
+}
+
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary) / 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary) / 0.7);
+}
